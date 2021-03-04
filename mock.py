@@ -15,7 +15,7 @@ def run(output_file, layer_count):
 
     for i in range(layer_count):
         vlayer = QgsVectorLayer(
-            "/data/Archaeologische_Schutzzonen.shp",
+            "/data/input.shp",
             "Test {}".format(i),
             "ogr"
         )
