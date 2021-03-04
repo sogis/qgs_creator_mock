@@ -45,3 +45,20 @@ Benchmark:
 For benchmarking on unix machines the simple to use GNU tool `time` can be utilized:
 
 `/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys  %Ss \nmemory:%MKB \ncpu %P" docker run --rm -v <path_to_local_shp>:/data qgs_creator_mock:local_dev`
+
+This results in the following for 1000 iterations:
+
+```
+time result
+cmd:docker run --rm -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev
+real 3.68s
+user 0.04s 
+sys  0.02s 
+memory:58860KB 
+cpu 1%
+```
+
+On a System with:
+* Intel® Core™ i7-8565U CPU (4 cores)
+
+Pro of this benchmark method is, that all process time and mem usage is measures. Including eventually existing docker bottle necks.
