@@ -59,6 +59,6 @@ cpu 1%
 ```
 
 On a System with:
-* Intel® Core™ i7-8565U CPU (4 cores)
+* i7-8565U CPU (4 cores)
 
 Pro of this benchmark method is, that all process time and mem usage is measures. Including eventually existing docker bottle necks.
