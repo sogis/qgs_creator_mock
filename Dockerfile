@@ -35,4 +35,4 @@ COPY uid_entrypoint.sh /usr/local/bin/
 
 # CMD ["/program/mock.py"]
 
-ENTRYPOINT ["python", "/program/mock.py"]
+ENTRYPOINT ["/usr/bin/python", "/program/mock.py"]

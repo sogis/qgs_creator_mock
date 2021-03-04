@@ -58,7 +58,22 @@ memory:58860KB
 cpu 1%
 ```
 
-On a System with:
-* i7-8565U CPU (4 cores)
+> On a System with:
+> * i7-8565U CPU (4 cores)
+> * running on battery (not full power)
+
+```
+time result
+cmd:docker run --rm -v /home/crud3_rt/tmp:/data qgs_creator_mock:local_dev
+real 2.88s
+user 0.04s 
+sys  0.01s 
+memory:58340KB 
+cpu 2%
+```
+
+> On a System with:
+> * i7-8565U CPU (4 cores)
+> * running on ac
 
 Pro of this benchmark method is, that all process time and mem usage is measured. Including eventually existing docker bottle necks.
