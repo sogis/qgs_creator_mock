@@ -42,7 +42,7 @@ Note:
 Benchmark:
 ----------
 
-For benchmarking on unix machines the simple to use GNU tool `time` can be utilized:
+For benchmarking on unix machines the simple to use GNU tool [time](https://www.gnu.org/software/time/) can be utilized:
 
 `/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys  %Ss \nmemory:%MKB \ncpu %P" docker run --rm -v <path_to_local_shp>:/data qgs_creator_mock:local_dev`
 
@@ -61,4 +61,4 @@ cpu 1%
 On a System with:
 * i7-8565U CPU (4 cores)
 
-Pro of this benchmark method is, that all process time and mem usage is measures. Including eventually existing docker bottle necks.
+Pro of this benchmark method is, that all process time and mem usage is measured. Including eventually existing docker bottle necks.
