@@ -14,15 +14,15 @@ def run(output_file, layer_count):
     reg = QgsMapLayerRegistry.instance()
 
     for i in range(layer_count):
-        vlayer = QgsVectorLayer(
-            "/data/input.shp",
-            "Test {}".format(i),
-            "ogr"
-        )
+        uri = QgsDataSourceURI()
+        uri.setConnection("postgis", "5432", "gdwh", "postgres", "password")
+        # set database schema, table name, geometry column and optionally
+        # subset (WHERE clause)
+        uri.setDataSource("agi_mopublic_pub", "mopublic_grundstueck", "geometrie")
+        vlayer = QgsVectorLayer(uri.uri(False), "layer name you like", "postgres")
         if not vlayer.isValid():
             raise IOError('Layer was not valid!')
         reg.addMapLayer(vlayer)
-        project.layerTreeRoot().addLayer(vlayer)
 
     project.write()
     qgs.exitQgis()

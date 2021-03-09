@@ -44,36 +44,29 @@ Benchmark:
 
 For benchmarking on unix machines the simple to use GNU tool [time](https://www.gnu.org/software/time/) can be utilized:
 
-`/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys  %Ss \nmemory:%MKB \ncpu %P" docker run --rm -v <path_to_local_shp>:/data qgs_creator_mock:local_dev`
+`/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys %Ss \nmemory:%MKB \ncpu %P" docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v <path_to_local_storeage>:/data qgs_creator_mock:local_dev`
+
+Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table without styling.
 
 This results in the following for 1000 iterations:
 
 ```
 time result
-cmd:docker run --rm -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev
-real 3.68s
+cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev
+real 23.72s
 user 0.04s 
-sys  0.02s 
-memory:58860KB 
-cpu 1%
+sys 0.01s 
+memory:59104KB 
+cpu 0%
 ```
 
 > On a System with:
 > * i7-8565U CPU (4 cores)
 > * running on battery (not full power)
 
-```
-time result
-cmd:docker run --rm -v /home/crud3_rt/tmp:/data qgs_creator_mock:local_dev
-real 2.88s
-user 0.04s 
-sys  0.01s 
-memory:58340KB 
-cpu 2%
-```
+Significant is the DB output while adding DB-Layers to the project. Which means, that added Layers are fetched instantly. This results in upcaling adding time per layer 
+plus heavily depends on the content of the layer.
 
-> On a System with:
-> * i7-8565U CPU (4 cores)
-> * running on ac
+![](db_activity_while_adding.png?raw=true)
 
-Pro of this benchmark method is, that all process time and mem usage is measured. Including eventually existing docker bottle necks.
+
