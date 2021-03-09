@@ -27,6 +27,8 @@ RUN echo "deb http://qgis.org/debian `lsb_release -c -s` main" && \
 
 # USER 1001
 
+COPY ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml /styles/
+
 COPY mock.py /program/
 
 COPY uid_entrypoint.sh /usr/local/bin/

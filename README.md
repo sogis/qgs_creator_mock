@@ -46,7 +46,7 @@ For benchmarking on unix machines the simple to use GNU tool [time](https://www.
 
 `/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys %Ss \nmemory:%MKB \ncpu %P" docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v <path_to_local_storeage>:/data qgs_creator_mock:local_dev`
 
-Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table without styling.
+Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table with styling. Adding the styling seems to be complex. So complex style lasts longer. Resulting QGS explodes in size. Here for 1000 layers around 49Mb.
 
 This results in the following for 1000 iterations:
 

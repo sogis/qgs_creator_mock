@@ -22,6 +22,7 @@ def run(output_file, layer_count):
         vlayer = QgsVectorLayer(uri.uri(False), "layer name you like", "postgres")
         if not vlayer.isValid():
             raise IOError('Layer was not valid!')
+        vlayer.loadNamedStyle('/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml')
         reg.addMapLayer(vlayer)
 
     project.write()
