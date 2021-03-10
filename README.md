@@ -46,17 +46,17 @@ For benchmarking on unix machines the simple to use GNU tool [time](https://www.
 
 `/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys %Ss \nmemory:%MKB \ncpu %P" docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v <path_to_local_storeage>:/data qgs_creator_mock:local_dev`
 
-Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table with styling. Adding the styling seems to be complex. So complex style lasts longer. Resulting QGS explodes in size. Here for 1000 layers around 49Mb.
+Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table with styling. Adding the styling seems to be complex. So complex style lasts longer. Resulting QGS explodes in size. Here for 500 layers around 19.6Mb.
 
-This results in the following for 1000 iterations:
+This results in the following for 500 iterations:
 
 ```
 time result
-cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev
-real 23.72s
-user 0.04s 
-sys 0.01s 
-memory:59104KB 
+cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev -v 400 -r 100
+real 13.84s
+user 0.01s 
+sys 0.06s 
+memory:58244KB 
 cpu 0%
 ```
 
