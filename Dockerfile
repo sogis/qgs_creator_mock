@@ -13,7 +13,7 @@ RUN apt-get update && \
 
 RUN add-apt-repository "deb https://qgis.org/debian-ltr `lsb_release -c -s` main" && \
     apt-get update && \
-    apt-get install -y --allow-unauthenticated qgis python-qgis qgis-plugin-grass
+    apt-get install -y --allow-unauthenticated qgis python-qgis qgis-plugin-grass postgresql
 
 COPY ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml /styles/
 

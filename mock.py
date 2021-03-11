@@ -1,32 +1,33 @@
 import qgis.core
 import os
 from qgis.core import *
-from qgis.core import QgsProject
 from optparse import OptionParser
 
 QML = '/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml'
+db_host = 'postgis'
+db_port = '5432'
+db = 'gdwh'
+db_user = 'postgres'
+db_pw = 'password'
+db_schema = 'agi_mopublic_pub'
+db_table = 'mopublic_grundstueck'
+geometry_column = 'geometrie'
+primary_key_column = 't_id'
+
 
 
 def run(output_file, raster_layers, vector_layers):
-    # QgsApplication.setPrefixPath("/usr/bin/qgis", True)
+    QgsApplication.setPrefixPath("/usr/bin/qgis", True)
     qgs = QgsApplication([], False)
     qgs.initQgis()
     project = QgsProject()
-    project.write('/data/mock.qgs')
 
     for i in range(vector_layers):
         uri = QgsDataSourceUri()
-        uri.setConnection("postgis", "5432", "gdwh", "postgres", "password")
-        uri.setDataSource("agi_mopublic_pub", "mopublic_grundstueck", "geometrie", '', 't_id')
-        uri.setSrid("2056")
-        uri.setGeometryColumn("geometrie")
-        uri.setKeyColumn("t_id")
+        uri.setConnection(db_host, db_port, db, db_user, db_pw)
+        uri.setDataSource(db_schema, db_table, geometry_column, '', primary_key_column)
+        uri.setUseEstimatedMetadata(True)
         vlayer = QgsVectorLayer(uri.uri(False), "Grundstueck {}".format(i), "postgres")
-        request = QgsFeatureRequest()
-        request.setLimit(2)
-        features = vlayer.getFeatures(request)
-        for f in features:
-            print(f.id)
         # if not vlayer.isValid():
         #     raise IOError('Layer was not valid!')
         vlayer.loadNamedStyle(QML)
@@ -34,14 +35,11 @@ def run(output_file, raster_layers, vector_layers):
     
     for i in range(raster_layers):
         file_path = "/data/ch.so.agi.orthofoto_2017.rgb/orthofoto_2017_rgb_12_5cm.vrt"
-        rlayer = QgsRasterLayer(file_path, 'Orthophoto {}'.format(i))
-        if not vlayer.isValid():
-            raise IOError('Layer was not valid!')
-        vlayer.loadNamedStyle('/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml')
+        rlayer = QgsRasterLayer(file_path, 'Orthophoto {}'.format(i), 'gdal')
+        # if not vlayer.isValid():
+        #     raise IOError('Layer was not valid!')
         project.addMapLayer(rlayer)
-
-    project.write()
-    qgs.exitQgis()
+    project.write('/data/mock.qgs')
 
 def main():
     parser = OptionParser(usage="usage: %prog [options]")
