@@ -1,9 +1,9 @@
 Utilized versions:
 ------------------
 
-* QGIS 2.18
-* Ubuntu 16.04
-* python 2.7
+* QGIS 3.16.4
+* Ubuntu 18.04
+* python 3.6.9
 
 Prerequisites:
 --------------
@@ -52,11 +52,11 @@ This results in the following for 500 iterations:
 
 ```
 time result
-cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev -v 400 -r 100
-real 13.84s
-user 0.01s 
-sys 0.06s 
-memory:58244KB 
+cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev_qgis3 -v 400 -r 100
+real 126.83s
+user 0.04s 
+sys 0.03s 
+memory:58920KB 
 cpu 0%
 ```
 

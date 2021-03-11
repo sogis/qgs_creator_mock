@@ -1,37 +1,44 @@
 import qgis.core
+import os
 from qgis.core import *
 from qgis.core import QgsProject
-from PyQt4.QtCore import QFileInfo
 from optparse import OptionParser
+
+QML = '/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml'
 
 
 def run(output_file, raster_layers, vector_layers):
-    QgsApplication.setPrefixPath("/usr/bin/qgis", True)
+    # QgsApplication.setPrefixPath("/usr/bin/qgis", True)
     qgs = QgsApplication([], False)
     qgs.initQgis()
-    project = QgsProject.instance()
-    project.write(QFileInfo('/data/mock.qgs'))
-    reg = QgsMapLayerRegistry.instance()
+    project = QgsProject()
+    project.write('/data/mock.qgs')
 
     for i in range(vector_layers):
-        uri = QgsDataSourceURI()
+        uri = QgsDataSourceUri()
         uri.setConnection("postgis", "5432", "gdwh", "postgres", "password")
-        uri.setDataSource("agi_mopublic_pub", "mopublic_grundstueck", "geometrie")
+        uri.setDataSource("agi_mopublic_pub", "mopublic_grundstueck", "geometrie", '', 't_id')
+        uri.setSrid("2056")
+        uri.setGeometryColumn("geometrie")
+        uri.setKeyColumn("t_id")
         vlayer = QgsVectorLayer(uri.uri(False), "Grundstueck {}".format(i), "postgres")
-        if not vlayer.isValid():
-            raise IOError('Layer was not valid!')
-        vlayer.loadNamedStyle('/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml')
-        reg.addMapLayer(vlayer)
+        request = QgsFeatureRequest()
+        request.setLimit(2)
+        features = vlayer.getFeatures(request)
+        for f in features:
+            print(f.id)
+        # if not vlayer.isValid():
+        #     raise IOError('Layer was not valid!')
+        vlayer.loadNamedStyle(QML)
+        project.addMapLayer(vlayer)
     
     for i in range(raster_layers):
-        file_name = "/data/ch.so.agi.orthofoto_2017.rgb/orthofoto_2017_rgb_12_5cm.vrt"
-        file_info = QFileInfo(file_name)
-        base_name = file_info.baseName()
-        rlayer = QgsRasterLayer(file_name, base_name)
+        file_path = "/data/ch.so.agi.orthofoto_2017.rgb/orthofoto_2017_rgb_12_5cm.vrt"
+        rlayer = QgsRasterLayer(file_path, 'Orthophoto {}'.format(i))
         if not vlayer.isValid():
             raise IOError('Layer was not valid!')
         vlayer.loadNamedStyle('/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml')
-        reg.addMapLayer(rlayer)
+        project.addMapLayer(rlayer)
 
     project.write()
     qgs.exitQgis()
