@@ -46,23 +46,22 @@ For benchmarking on unix machines the simple to use GNU tool [time](https://www.
 
 `/usr/bin/time -f "time result\ncmd:%C\nreal %es\nuser %Us \nsys %Ss \nmemory:%MKB \ncpu %P" docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v <path_to_local_storeage>:/data qgs_creator_mock:local_dev`
 
-Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table with styling. Adding the styling seems to be complex. So complex style lasts longer. Resulting QGS explodes in size. Here for 500 layers around 19.6Mb.
+Test layer was the `agi_mopublic_pub.mopublic_grundstueck` table with styling. Adding the styling seems to be complex. So complex style lasts longer. Resulting QGS explodes in size. Here for 500 layers around 37.5Mb.
 
 This results in the following for 500 iterations:
 
 ```
 time result
 cmd:docker run --rm -it --link local_postgis_postgis_1:postgis --net local_postgis_default -v /home/crud3_rt/tmp/:/data qgs_creator_mock:local_dev_qgis3 -v 400 -r 100
-real 126.83s
-user 0.04s 
-sys 0.03s 
-memory:58920KB 
+real 17.93s
+user 0.01s 
+sys 0.01s 
+memory:58680KB 
 cpu 0%
 ```
 
 > On a System with:
 > * i7-8565U CPU (4 cores)
-> * running on battery (not full power)
 
 Significant is the DB output while adding DB-Layers to the project. Which means, that added Layers are fetched instantly. This results in upcaling adding time per layer 
 plus heavily depends on the content of the layer.

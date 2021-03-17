@@ -13,21 +13,20 @@ RUN apt-get update && \
 
 RUN add-apt-repository "deb https://qgis.org/debian-ltr `lsb_release -c -s` main" && \
     apt-get update && \
-    apt-get install -y --allow-unauthenticated qgis python-qgis qgis-plugin-grass postgresql
+    apt-get install -y --allow-unauthenticated qgis python3-qgis qgis-plugin-grass postgresql
 
 COPY ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml /styles/
 
 COPY mock.py /program/
+COPY test.py /program/
 
 COPY uid_entrypoint.sh /usr/local/bin/
 
 ENV QT_QPA_PLATFORM=offscreen
-ENV QGIS_PREFIX_PATH="/usr/bin/qgis"
+ENV QGIS_PREFIX_PATH="/usr"
 
 # ENTRYPOINT ["/usr/local/bin/uid_entrypoint.sh"]
 
 # CMD ["/program/mock.py"]
 
 ENTRYPOINT ["/usr/bin/python3", "/program/mock.py"]
-
-
