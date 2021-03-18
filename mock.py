@@ -1,6 +1,7 @@
 import qgis.core
 import os
 from qgis.core import *
+from qgis.server import *
 from optparse import OptionParser
 
 QML = '/styles/ch.so.agi.av.grundstuecke.rechtskraeftige_v3.qml'
@@ -18,7 +19,6 @@ primary_key_column = 't_id'
 
 def run(output_file, raster_layers, vector_layers):
     qgs = QgsApplication([], False)
-    qgs.initQgis()
     project = QgsProject()
 
     for i in range(vector_layers):
@@ -26,17 +26,20 @@ def run(output_file, raster_layers, vector_layers):
         uri.setConnection(db_host, db_port, db, db_user, db_pw)
         uri.setDataSource(db_schema, db_table, geometry_column, '', primary_key_column)
         uri.setUseEstimatedMetadata(True)
+        uri.setWkbType(QgsWkbTypes.Polygon)
         vlayer = QgsVectorLayer(uri.uri(False), "Grundstueck {}".format(i), "postgres")
-        if not vlayer.isValid():
-            raise IOError('Layer was not valid!')
-        vlayer.loadNamedStyle(QML)
+        print(vlayer.wkbType())
+        # if not vlayer.isValid():
+        #     raise IOError('Layer was not valid!')
+        x = vlayer.loadNamedStyle(QML)
+        print(x)
         project.addMapLayer(vlayer)
     
     for i in range(raster_layers):
         file_path = "/data/ch.so.agi.orthofoto_2017.rgb/orthofoto_2017_rgb_12_5cm.vrt"
         rlayer = QgsRasterLayer(file_path, 'Orthophoto {}'.format(i), 'gdal')
-        if not vlayer.isValid():
-            raise IOError('Layer was not valid!')
+        # if not vlayer.isValid():
+        #     raise IOError('Layer was not valid!')
         project.addMapLayer(rlayer)
     project.write('/data/mock.qgs')
 
