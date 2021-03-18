@@ -26,6 +26,7 @@ def run(output_file, raster_layers, vector_layers):
         uri.setConnection(db_host, db_port, db, db_user, db_pw)
         uri.setDataSource(db_schema, db_table, geometry_column, '', primary_key_column)
         uri.setUseEstimatedMetadata(True)
+        uri.setWkbType(QgsWkbTypes.Polygon)
         vlayer = QgsVectorLayer(uri.uri(False), "Grundstueck {}".format(i), "postgres")
         if not vlayer.isValid():
             raise IOError('Layer was not valid!')
